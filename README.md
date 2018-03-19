@@ -44,9 +44,11 @@ https://pypi.python.org/pypi/RPi.GPIO - GPIO module<br />
 Distributed under MIT license
 
 ### Credits:
-Filip Wicha,<br />
-Marcin Wiktorowski,<br />
-Robert Zaranek
+* **Filip Wicha** - [filipwicha](https://github.com/filipwicha)
+* **Marcin Wiktorowski** - [wiktorowski211](https://github.com/wiktorowski211)
+* **Robert Zaranek** - [Rzar8767](https://github.com/Rzar8767)
+
+
 
 The project was conducted during the Microprocessor Lab course held by the Institute of Control and Information Engineering, Poznan University of Technology.<br />
 Supervisor: Tomasz Mañkowski
