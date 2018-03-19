@@ -12,11 +12,11 @@ Projects components:<br />
 -NEO-7M-C GPS/GLONASS module <br />
 -TFT Display <br />
 -Powerbank 4000MAh <br />
--2x switch button <br />
+-2x switch buttons <br />
 
 ### Tools: 
-Visual Studio Community - Python with ptvsd module for remote debugging
-Putty - SSH connection
+Visual Studio Community - Python with ptvsd module for remote debugging <br />
+Putty - SSH connection <br />
 
 ### How to run:
 #### Connections:<br />
@@ -38,7 +38,7 @@ Improvements:<br />
 
 ### Attributions:
 https://pypi.python.org/pypi/gpsd-py3 - gpsd module<br />
-https://pypi.python.org/pypi/RPi.GPIO - uC GPIO module<br />
+https://pypi.python.org/pypi/RPi.GPIO - GPIO module<br />
 
 ### License:
 Distributed under MIT license
