@@ -1,4 +1,3 @@
-
 import ptvsd
 import gpsd
 import csv
