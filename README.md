@@ -10,7 +10,7 @@ LapTracker is created to resolve this problem. You can set your virtual start/fi
 Projects components:<br />
 -Raspberry Pi Zero W <br />
 -NEO-7M-C GPS/GLONASS module <br />
--TFT Display <br />
+-PCD8544 (Nokia 3310) display <br />
 -Powerbank 4000MAh <br />
 -2x switch buttons <br />
 
@@ -51,4 +51,4 @@ Distributed under MIT license
 
 
 The project was conducted during the Microprocessor Lab course held by the Institute of Control and Information Engineering, Poznan University of Technology.<br />
-Supervisor: Tomasz Mañkowski
+Supervisor: Tomasz MaÃ±kowski
