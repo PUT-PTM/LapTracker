@@ -4,13 +4,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>2c6d53d7-bc11-45d9-abe0-c570e66a4281</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>LapTracker.py</StartupFile>
+    <StartupFile>Simulator.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>LapTracker</Name>
     <RootNamespace>LapTracker</RootNamespace>
+    <PublishUrl>\\192.168.137.157\</PublishUrl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +22,12 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Display.py" />
+    <Compile Include="Distance.py" />
     <Compile Include="LapTracker.py" />
+    <Compile Include="Simulator.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tracks\" />
