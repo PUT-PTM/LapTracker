@@ -28,12 +28,14 @@ class Simulator(object):
             return self.get_current()
 
 sim = Simulator()
+finish = Packet(52.323239833,17.6696305, '')
 while True:
     packet1 = sim.get_current()
-    packet2 = sim.get_current()
-
-    distance_haver = haversine(packet1.lon, packet1.lat, packet2.lon, packet2.lat)
-    distance_equire = equirectangular_dist_approx(packet1.lon, packet1.lat, packet2.lon, packet2.lat)
+    distance_haver = haversine(packet1.lon, packet1.lat, finish.lon, finish.lat)
+    distance_equire = equirectangular_dist_approx(packet1.lon, packet1.lat, finish.lon, finish.lat)
 
     print("Distance haver: " + str(distance_haver) + " Distance equire: " + str(distance_equire))
-    time.sleep(1)
+    if distance_haver > 10:
+        time.sleep(0.05)
+    else:
+        time.sleep(2)

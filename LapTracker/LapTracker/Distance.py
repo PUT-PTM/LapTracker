@@ -18,7 +18,7 @@ def haversine(lon1, lat1, lon2, lat2):
     c = 2 * asin(sqrt(a)) 
     # Radius of earth in kilometers is 6371
     km = 6371* c
-    return km
+    return km*1000
 
 """
 Less precision, much faster, requires testing if it's enough
@@ -29,4 +29,4 @@ def equirectangular_dist_approx(lon1, lat1, lon2, lat2):
 	x = (lon2 - lon1) * cos( 0.5*(lat2+lat1) )
 	y = lat2 - lat1
 	d = R * sqrt( x*x + y*y )
-	return d
+	return d*1000
