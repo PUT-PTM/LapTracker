@@ -20,21 +20,21 @@ disp = LCD.PCD8544(DC, RST, spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE, max_speed_hz=40
 disp.begin(contrast=50)
 
 # Set fonts
-font_speed = ImageFont.truetype('FreePixel.ttf', 28)
-font_kmh = ImageFont.truetype('FreePixel.ttf', 8)
-font_parameter = ImageFont.truetype('FreePixel.ttf', 16)
+font_speed = ImageFont.truetype('pixelmix.ttf', 28)
+font_kmh = ImageFont.truetype('pixelmix.ttf', 8)
+font_parameter = ImageFont.truetype('pixelmix.ttf', 16)
 
-# Clear display.
+# Clear display
 disp.clear()
 disp.display()
 image = Image.new('1', (LCD.LCDWIDTH, LCD.LCDHEIGHT))
 
 draw = ImageDraw.Draw(image)
 
-# Draw a white filled box to clear the image.
+# Draw a white filled box to clear the image
 draw.rectangle((0, 0, LCD.LCDWIDTH, LCD.LCDHEIGHT), outline=255, fill=255)
 
-# Load an image, resize it, and convert to 1 bit color.
+# Load an image, resize it, and convert to 1 bit color
 # image = Image.open('name.png').resize((LCD.LCDWIDTH, LCD.LCDHEIGHT)).convert('1')
 
 # Variables
