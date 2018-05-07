@@ -43,6 +43,9 @@ distance = 10.3
 laptime = 430.0
 
 screen = 0  # Flag that informs which screen to show (for example: distance, time, etc)
+signalbar = False #True if there is signal, False otherwise
+currentposition = False #False if you have to speed up, True if you are faster than before
+
 
 # Display image.
 disp.image(image)
@@ -55,7 +58,7 @@ def printmenu():
 
     # left menu (rectangle)
     draw.line((13, 0, 13, 47), fill=0)
-    draw.line((0, 0, 0, 48), fill=0)
+    draw.line((0, 0, 0, 47), fill=0)
     draw.line((0, 0, 13, 0), fill=0)
     draw.line((0, 47, 13, 47), fill=0)
 
@@ -63,6 +66,13 @@ def printmenu():
     draw.line((0, 12, 13, 12), fill=0)
     draw.line((0, 24, 13, 24), fill=0)
     draw.line((0, 36, 13, 36), fill=0)
+	
+	#print letters in submenu
+    draw.text((4, 2), 'S', font=font_kmh)
+    draw.text((4, 14), 'T', font=font_kmh)
+    draw.text((4, 26), 'L', font=font_kmh)
+    draw.line((6, 39, 6, 44), fill=0)
+
 
 def printspeed():
     global speed
@@ -86,7 +96,29 @@ def nextscreen():
     screen += 1
     if screen == 4:
         screen = 0
-    return
+	
+	#Lines below print currently chosen submenu
+    if screen == 0:
+        draw.rectangle((1, 1, 12, 11), outline=0, fill=255)
+        draw.rectangle((1, 37, 12, 46), outline=255, fill=255)
+        draw.text((4, 2), 'S', font=font_kmh)
+        draw.line((6, 39, 6, 44), fill=0)
+    elif screen == 1:
+        draw.rectangle((1, 1, 12, 11), outline=255, fill=255)
+        draw.rectangle((1, 13, 12, 23), outline=0, fill=255)
+        draw.text((4, 14), 'T', font=font_kmh)
+        draw.text((4, 2), 'S', font=font_kmh)
+    elif screen == 2:
+        draw.rectangle((1, 13, 12, 23), outline=255, fill=255)
+        draw.rectangle((1, 25, 12, 35), outline=0, fill=255)
+        draw.text((4, 26), 'L', font=font_kmh)
+        draw.text((4, 14), 'T', font=font_kmh)
+    elif screen == 3:
+        draw.rectangle((1, 25, 12, 35), outline=255, fill=255)
+        draw.rectangle((1, 37, 12, 46), outline=0, fill=255)
+        draw.line((6, 39, 6, 44), fill=0)
+        draw.text((4, 26), 'L', font=font_kmh)
+
 
 def printdistance():
 	global distance
@@ -142,11 +174,54 @@ def printsubmenu():
 	else:
 		something2()
 
+def printsignalbar(): #prints gps signal
+    global signalbar
+    if signalbar == True:
+        draw.rectangle((62, 0, 69, 8), outline=255, fill=255)
+        draw.rectangle((62, 5, 63, 8), outline=0, fill=0)
+        draw.rectangle((65, 2, 66, 8), outline=0, fill=0)
+        draw.rectangle((68, 0, 69, 8), outline=0, fill=0)
+    elif signalbar == False:
+        draw.rectangle((62, 0, 69, 8), outline=255, fill=255)
+        draw.text((64, 1), 'X', font=font_kmh)
+    
+    signalbar = not signalbar
+
+def printcurrentposition(): #prints information about current position
+    global currentposition
+    if currentposition == False:
+        draw.rectangle((72, 0, 83, 15), outline=255, fill=255)
+        #draw SPEEDUP symbol
+        draw.rectangle((76, 4, 79, 15), outline=0, fill=0)
+        draw.line((73, 4, 82, 4), fill=0)
+        draw.line((74, 3, 81, 3), fill=0)
+        draw.line((75, 2, 80, 2), fill=0)
+        draw.line((76, 1, 79, 1), fill=0)
+        draw.line((77, 0, 78, 0), fill=0)
+        
+
+    elif currentposition == True:
+        draw.rectangle((72, 0, 83, 15), outline=255, fill=255)    
+        #draw SLOWDWON symbol
+        draw.rectangle((76, 0, 79, 10), outline=0, fill=0)
+        draw.line((73, 11, 82, 11), fill=0)
+        draw.line((74, 12, 81, 12), fill=0)
+        draw.line((75, 13, 80, 13), fill=0)
+        draw.line((76, 14, 79, 14), fill=0)
+        draw.line((77, 15, 78, 15), fill=0)
+    
+    currentposition = not currentposition
+
+
+
+
 print('Press Ctrl-C to quit.')
 printmenu()
 while True:
 	printspeed()
 	printsubmenu()
+	printsignalbar()
+	printcurrentposition()
 	disp.image(image)
 	disp.display()
 	nextscreen()
