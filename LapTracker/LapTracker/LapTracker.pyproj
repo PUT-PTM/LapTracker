@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>LapTracker</Name>
     <RootNamespace>LapTracker</RootNamespace>
-    <PublishUrl>\\192.168.137.157\</PublishUrl>
+    <PublishUrl>\\192.168.137.157\laptracker\LapTracker\Display</PublishUrl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,6 +25,9 @@
     <Compile Include="Display.py" />
     <Compile Include="Distance.py" />
     <Compile Include="LapTracker.py" />
+    <Compile Include="LineIntersection.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Simulator.py">
       <SubType>Code</SubType>
     </Compile>
