@@ -26,6 +26,9 @@
     <Compile Include="Distance.py" />
     <Compile Include="LapTracker.py" />
     <Compile Include="LineIntersection.py" />
+    <Compile Include="Route.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Simulator.py">
       <SubType>Code</SubType>
     </Compile>
@@ -35,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tracks\gpsdata.csv" />
+    <Content Include="Tracks\lap.csv" />
     <Content Include="Tracks\pixelmix.ttf" />
   </ItemGroup>
   <ItemGroup>
