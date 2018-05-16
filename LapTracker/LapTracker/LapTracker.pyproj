@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>2c6d53d7-bc11-45d9-abe0-c570e66a4281</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Simulator.py</StartupFile>
+    <StartupFile>Display.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -12,6 +12,7 @@
     <Name>LapTracker</Name>
     <RootNamespace>LapTracker</RootNamespace>
     <PublishUrl>\\192.168.8.104\pythonapp</PublishUrl>
+    <InterpreterId>Global|PythonCore|2.7-32</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
