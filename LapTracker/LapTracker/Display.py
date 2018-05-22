@@ -38,12 +38,13 @@ class DisplaySetter(object):
         self.draw.rectangle((0, 0, LCD.LCDWIDTH, LCD.LCDHEIGHT), outline=255, fill=255)
     
     # Variables in use
-    speed = 85
-    distance = 10.3
-    laptime = 430.0
+    speed = 85 # 
+    distance = 10.3 
+    laptime = 430.0 
     screen = 0  # flag that informs which screen to show (for example: distance, time, etc)
     signalbar = False # true if there is signal, false otherwise
-    currentposition = False # false if you have to speed up, true if you are faster than before
+    currentposition = -3.3 # tells you how much faster or slower are you compare to previous lap
+    vmax = 150 # max recorded speed
 
     def printmenu(self):
         # km/h
@@ -60,12 +61,19 @@ class DisplaySetter(object):
         self.draw.line((0, 24, 13, 24), fill=0)
         self.draw.line((0, 36, 13, 36), fill=0)
 	
-	    #print letters in submenu
+	    # print letters in submenu
         self.draw.text((4, 2), 'S', font=font_kmh)
         self.draw.text((4, 14), 'T', font=font_kmh)
         self.draw.text((4, 26), 'L', font=font_kmh)
-        self.draw.line((6, 39, 6, 44), fill=0)
+        self.draw.line((4, 39, 6, 44), fill=0)
+        self.draw.line((8, 39, 6, 44), fill=0)
 
+        # distance submenu is chosen
+        self.draw.rectangle((1, 1, 12, 11), outline=0, fill=255)
+        self.draw.rectangle((1, 37, 12, 46), outline=255, fill=255)
+        self.draw.text((4, 2), 'S', font=font_kmh)
+        self.draw.line((4, 39, 6, 44), fill=0)
+        self.draw.line((8, 39, 6, 44), fill=0)
 
     def printspeed(self):
         # Clear the speed
@@ -92,7 +100,8 @@ class DisplaySetter(object):
             self.draw.rectangle((1, 1, 12, 11), outline=0, fill=255)
             self.draw.rectangle((1, 37, 12, 46), outline=255, fill=255)
             self.draw.text((4, 2), 'S', font=font_kmh)
-            self.draw.line((6, 39, 6, 44), fill=0)
+            self.draw.line((4, 39, 6, 44), fill=0) #print V
+            self.draw.line((8, 39, 6, 44), fill=0) #print V
         elif self.screen == 1:
             self.draw.rectangle((1, 1, 12, 11), outline=255, fill=255)
             self.draw.rectangle((1, 13, 12, 23), outline=0, fill=255)
@@ -106,9 +115,9 @@ class DisplaySetter(object):
         elif self.screen == 3:
             self.draw.rectangle((1, 25, 12, 35), outline=255, fill=255)
             self.draw.rectangle((1, 37, 12, 46), outline=0, fill=255)
-            self.draw.line((6, 39, 6, 44), fill=0)
+            self.draw.line((4, 39, 6, 44), fill=0) #print V
+            self.draw.line((8, 39, 6, 44), fill=0) #print V
             self.draw.text((4, 26), 'L', font=font_kmh)
-
 
     def printdistance(self):
 	    ## Used for test
@@ -129,19 +138,23 @@ class DisplaySetter(object):
         # Print lap time
 	    self.draw.text((17, 28), str(self.laptime), font=font_parameter)
 	
-    def something1(self):
+    def printposition(self):
         # Clear the display
-	    self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-	    self.draw.text((70, 35), '', font=font_kmh)
-        # Print sth
-	    self.draw.text((17, 28), str('sth :('), font=font_parameter)
+		self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
+		self.draw.text((70, 35), '', font=font_kmh)
+		# Print currentposition
+		self.draw.text((75, 35), 's', font=font_kmh)
+		if(self.currentposition > 0):
+			self.draw.text((17, 28), str('+' + str(self.currentposition)), font=font_parameter)
+		else:
+			self.draw.text((17, 28), str(str(self.currentposition)), font=font_parameter)
 
-    def something2(self):
+    def printvmax(self):
         # Clear the display
 	    self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-	    self.draw.text((70, 35), '', font=font_kmh)
+	    self.draw.text((62, 35), 'km/h', font=font_kmh)
         # Print sth
-	    self.draw.text((17, 28), str('sth :)'), font=font_parameter)
+	    self.draw.text((17, 28), str(self.vmax), font=font_parameter)
 
     def printsubmenu(self):
 	    if self.screen == 0:
@@ -149,9 +162,9 @@ class DisplaySetter(object):
 	    elif self.screen == 1:
 		    self.printlaptime()
 	    elif self.screen == 2:
-		    self.something1()
+		    self.printposition()
 	    else:
-		    self.something2()
+		    self.printvmax()
 
     def printsignalbar(self): #prints gps signal
         if self.signalbar == True:
@@ -166,7 +179,7 @@ class DisplaySetter(object):
         #self.signalbar = not self.signalbar
 
     def printcurrentposition(self): #prints information about current position
-        if self.currentposition == False:
+        if self.currentposition < 0:
             self.draw.rectangle((72, 0, 83, 15), outline=255, fill=255)
             #draw SPEEDUP symbol
             self.draw.rectangle((76, 4, 79, 15), outline=0, fill=0)
@@ -175,7 +188,7 @@ class DisplaySetter(object):
             self.draw.line((75, 2, 80, 2), fill=0)
             self.draw.line((76, 1, 79, 1), fill=0)
             self.draw.line((77, 0, 78, 0), fill=0)
-        elif self.currentposition == True:
+        elif self.currentposition >= 0:
             self.draw.rectangle((72, 0, 83, 15), outline=255, fill=255)    
             #draw SLOWDWON symbol
             self.draw.rectangle((76, 0, 79, 10), outline=0, fill=0)
@@ -184,27 +197,27 @@ class DisplaySetter(object):
             self.draw.line((75, 13, 80, 13), fill=0)
             self.draw.line((76, 14, 79, 14), fill=0)
             self.draw.line((77, 15, 78, 15), fill=0)
-        
-        # Used for test
-        #self.currentposition = not self.currentposition
 
-    # SETTERS for speed, distance, laptime
-    # TOGGLERS for signalbar currentposition
-    # TO TURN SWITCH TO NEXT SCREEN USE displayInUse.nextscreen()
-    def setspeed(self, new):
-        self.speed = new
-
-    def setdistance(self, new):
-        self.distance = new
-
-    def setlaptime(self, new):
-        self.laptime = new
-
-    def togglesignalbar(self):
-        self.signalbar = not self.signalbar
-
-    def togglecurrentposition(self):
-        self.currentposition = not self.currentposition
+    # SETTERS for speed, distance, laptime, currentposition, vmax		#
+    # TOGGLE for signalbar												 #
+    # TO SWITCH TO NEXT SCREEN USE displayInUse.nextscreen()			  #
+    def setspeed(self, new):											   #		                         _     _       _      
+        self.speed = new													#		                        | |   | |     (_)     
+																			#		  _   _   ___    ___    | |_  | |__    _   ___ 
+    def setdistance(self, new):												#		 | | | | / __|  / _ \   | __| | '_ \  | | / __|
+        self.distance = new													#		 | |_| | \__ \ |  __/   | |_  | | | | | | \__ \
+																			#		  \__,_| |___/  \___|    \__| |_| |_| |_| |___/
+    def setlaptime(self, new):												#
+        self.laptime = new													####	   ____    _   _   _       __     __
+																			#		  / __ \  | \ | | | |      \ \   / /
+    def togglesignalbar(self):												#		 | |  | | |  \| | | |       \ \_/ / 
+        self.signalbar = not self.signalbar									#		 | |  | | | . ` | | |        \   /  
+																			#		 | |__| | | |\  | | |____     | |   
+    def setcurrentposition(self, new):										#		  \____/  |_| \_| |______|    |_| 
+        self.currentposition = new										   #		
+																		  #				type "displayInUse." before any use of function
+    def setvmax(self, new):												 #
+        self.vmax = new													#
 
 
 displayInUse = DisplaySetter()
@@ -219,5 +232,4 @@ while True:
 	displayInUse.printcurrentposition()
 	displayInUse.disp.image(displayInUse.image)
 	displayInUse.disp.display()
-	displayInUse.nextscreen() # Used to tests
 	time.sleep(1)
