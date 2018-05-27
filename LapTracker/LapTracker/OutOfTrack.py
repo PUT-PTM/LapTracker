@@ -1,6 +1,6 @@
 import csv
 
-class Route(object):
+class OutOfTrack(object):
 
     def __init__(self, filepath):
         self.file = open(filepath,'rt')

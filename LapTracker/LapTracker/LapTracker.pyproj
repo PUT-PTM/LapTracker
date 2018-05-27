@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>LapTracker</Name>
     <RootNamespace>LapTracker</RootNamespace>
-    <PublishUrl>\\192.168.8.104\pythonapp</PublishUrl>
+    <PublishUrl>\\192.168.137.157\LapTracker\</PublishUrl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,7 +26,7 @@
     <Compile Include="Distance.py" />
     <Compile Include="LapTracker.py" />
     <Compile Include="LineIntersection.py" />
-    <Compile Include="Route.py">
+    <Compile Include="OutOfTrack.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Simulator.py">
@@ -39,6 +39,7 @@
   <ItemGroup>
     <Content Include="Tracks\gpsdata.csv" />
     <Content Include="Tracks\lap.csv" />
+    <Content Include="Tracks\motocrosstrack.csv" />
     <Content Include="Tracks\pixelmix.ttf" />
   </ItemGroup>
   <ItemGroup>
