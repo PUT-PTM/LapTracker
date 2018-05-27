@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>2c6d53d7-bc11-45d9-abe0-c570e66a4281</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Simulator.py</StartupFile>
+    <StartupFile>Display.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
