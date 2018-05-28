@@ -26,6 +26,9 @@
     <Compile Include="Distance.py" />
     <Compile Include="LapTracker.py" />
     <Compile Include="LineIntersection.py" />
+    <Compile Include="Measure.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="OutOfTrack.py">
       <SubType>Code</SubType>
     </Compile>
