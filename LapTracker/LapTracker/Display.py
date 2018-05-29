@@ -8,9 +8,7 @@ from PIL import ImageFont
 from PIL import ImageDraw
 
 # Set fonts
-font_speed = ImageFont.truetype('pixelmix.ttf', 28)
-font_kmh = ImageFont.truetype('pixelmix.ttf', 8)
-font_parameter = ImageFont.truetype('pixelmix.ttf', 16)
+
 
 class DisplaySetter(object):
     ## Raspberry Pi hardware SPI config:
@@ -28,6 +26,11 @@ class DisplaySetter(object):
 
     def __init__(self):
         # Initialize library.
+
+        self.font_speed = ImageFont.truetype('pixelmix.ttf', 28)
+        self.font_kmh = ImageFont.truetype('pixelmix.ttf', 8)
+        self.font_parameter = ImageFont.truetype('pixelmix.ttf', 16)
+
         self.disp.begin(contrast=50)
         
         # Clear display
@@ -48,7 +51,7 @@ class DisplaySetter(object):
 
     def printmenu(self):
         # km/h
-        self.draw.text((62, 17), 'km/h', font=font_kmh)
+        self.draw.text((62, 17), 'km/h', font=self.font_kmh)
 
         # left menu (rectangle)
         self.draw.line((13, 0, 13, 47), fill=0)
@@ -62,16 +65,16 @@ class DisplaySetter(object):
         self.draw.line((0, 36, 13, 36), fill=0)
 	
 	    # print letters in submenu
-        self.draw.text((4, 2), 'S', font=font_kmh)
-        self.draw.text((4, 14), 'T', font=font_kmh)
-        self.draw.text((4, 26), 'L', font=font_kmh)
+        self.draw.text((4, 2), 'S', font=self.font_kmh)
+        self.draw.text((4, 14), 'T', font=self.font_kmh)
+        self.draw.text((4, 26), 'L', font=self.font_kmh)
         self.draw.line((4, 39, 6, 44), fill=0)
         self.draw.line((8, 39, 6, 44), fill=0)
 
         # distance submenu is chosen
         self.draw.rectangle((1, 1, 12, 11), outline=0, fill=255)
         self.draw.rectangle((1, 37, 12, 46), outline=255, fill=255)
-        self.draw.text((4, 2), 'S', font=font_kmh)
+        self.draw.text((4, 2), 'S', font=self.font_kmh)
         self.draw.line((4, 39, 6, 44), fill=0)
         self.draw.line((8, 39, 6, 44), fill=0)
 
@@ -80,7 +83,7 @@ class DisplaySetter(object):
         self.draw.rectangle((17, 0, 61, 28), outline=255, fill=255)
 
         # Print the speed
-        self.draw.text((17, -3), str(self.speed), font=font_speed)
+        self.draw.text((17, -3), str(self.speed), font=self.font_speed)
 
         ## Test of speed
         #self.speed += 5
@@ -99,25 +102,25 @@ class DisplaySetter(object):
         if self.screen == 0:
             self.draw.rectangle((1, 1, 12, 11), outline=0, fill=255)
             self.draw.rectangle((1, 37, 12, 46), outline=255, fill=255)
-            self.draw.text((4, 2), 'S', font=font_kmh)
+            self.draw.text((4, 2), 'S', font=self.font_kmh)
             self.draw.line((4, 39, 6, 44), fill=0) #print V
             self.draw.line((8, 39, 6, 44), fill=0) #print V
         elif self.screen == 1:
             self.draw.rectangle((1, 1, 12, 11), outline=255, fill=255)
             self.draw.rectangle((1, 13, 12, 23), outline=0, fill=255)
-            self.draw.text((4, 14), 'T', font=font_kmh)
-            self.draw.text((4, 2), 'S', font=font_kmh)
+            self.draw.text((4, 14), 'T', font=self.font_kmh)
+            self.draw.text((4, 2), 'S', font=self.font_kmh)
         elif self.screen == 2:
             self.draw.rectangle((1, 13, 12, 23), outline=255, fill=255)
             self.draw.rectangle((1, 25, 12, 35), outline=0, fill=255)
-            self.draw.text((4, 26), 'L', font=font_kmh)
-            self.draw.text((4, 14), 'T', font=font_kmh)
+            self.draw.text((4, 26), 'L', font=self.font_kmh)
+            self.draw.text((4, 14), 'T', font=self.font_kmh)
         elif self.screen == 3:
             self.draw.rectangle((1, 25, 12, 35), outline=255, fill=255)
             self.draw.rectangle((1, 37, 12, 46), outline=0, fill=255)
             self.draw.line((4, 39, 6, 44), fill=0) #print V
             self.draw.line((8, 39, 6, 44), fill=0) #print V
-            self.draw.text((4, 26), 'L', font=font_kmh)
+            self.draw.text((4, 26), 'L', font=self.font_kmh)
 
     def printdistance(self):
 	    ## Used for test
@@ -127,34 +130,34 @@ class DisplaySetter(object):
 		
         # Clear the display
 	    self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-	    self.draw.text((70, 35), 'km', font=font_kmh)
+	    self.draw.text((70, 35), 'km', font=self.font_kmh)
         # Print the distance
-	    self.draw.text((17, 28), str(self.distance), font=font_parameter)
+	    self.draw.text((17, 28), str(self.distance), font=self.font_parameter)
 
     def printlaptime(self):
         # Clear the display
 	    self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-	    self.draw.text((75, 35), 's', font=font_kmh)
+	    self.draw.text((75, 35), 's', font=self.font_kmh)
         # Print lap time
-	    self.draw.text((17, 28), str(self.laptime), font=font_parameter)
+	    self.draw.text((17, 28), str(self.laptime), font=self.font_parameter)
 	
     def printposition(self):
         # Clear the display
 		self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-		self.draw.text((70, 35), '', font=font_kmh)
+		self.draw.text((70, 35), '', font=self.font_kmh)
 		# Print currentposition
-		self.draw.text((75, 35), 's', font=font_kmh)
+		self.draw.text((75, 35), 's', font=self.font_kmh)
 		if(self.currentposition > 0):
-			self.draw.text((17, 28), str('+' + str(self.currentposition)), font=font_parameter)
+			self.draw.text((17, 28), str('+' + str(self.currentposition)), font=self.font_parameter)
 		else:
-			self.draw.text((17, 28), str(str(self.currentposition)), font=font_parameter)
+			self.draw.text((17, 28), str(str(self.currentposition)), font=self.font_parameter)
 
     def printvmax(self):
         # Clear the display
 	    self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-	    self.draw.text((62, 35), 'km/h', font=font_kmh)
+	    self.draw.text((62, 35), 'km/h', font=self.font_kmh)
         # Print sth
-	    self.draw.text((17, 28), str(self.vmax), font=font_parameter)
+	    self.draw.text((17, 28), str(self.vmax), font=self.font_parameter)
 
     def printsubmenu(self):
 	    if self.screen == 0:
@@ -174,7 +177,7 @@ class DisplaySetter(object):
             self.draw.rectangle((68, 0, 69, 8), outline=0, fill=0)
         elif self.signalbar == False:
             self.draw.rectangle((62, 0, 69, 8), outline=255, fill=255)
-            self.draw.text((64, 1), 'X', font=font_kmh)
+            self.draw.text((64, 1), 'X', font=self.font_kmh)
         # Used for tests
         #self.signalbar = not self.signalbar
 
@@ -220,16 +223,19 @@ class DisplaySetter(object):
         self.vmax = new													#
 
 
-displayInUse = DisplaySetter()
+#displayInUse = DisplaySetter()
 
-print('It works (Press Ctrl+C to stop)')
-displayInUse.printmenu()
+#print('It works (Press Ctrl+C to stop)')
+#displayInUse.printmenu()
 
-while True:
-	displayInUse.printspeed()
-	displayInUse.printsubmenu()
-	displayInUse.printsignalbar()
-	displayInUse.printcurrentposition()
-	displayInUse.disp.image(displayInUse.image)
-	displayInUse.disp.display()
-	time.sleep(1)
+
+
+#while True:
+#	displayInUse.printspeed()
+#	displayInUse.printsubmenu()
+#	displayInUse.printsignalbar()
+#	displayInUse.printcurrentposition()
+#	displayInUse.disp.image(displayInUse.image)
+#	displayInUse.disp.display()
+#	displayInUse.nextscreen()
+#	time.sleep(1)

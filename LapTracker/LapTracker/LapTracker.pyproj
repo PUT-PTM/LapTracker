@@ -32,6 +32,9 @@
     <Compile Include="OutOfTrack.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Recorder.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Simulator.py">
       <SubType>Code</SubType>
     </Compile>
