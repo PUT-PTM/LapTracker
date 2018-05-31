@@ -54,7 +54,7 @@ packet1 = sim.get_current()
 while True:
     packet2 = sim.get_current()
     #distance_haver = haversine(packet1.lon, packet1.lat, finish.lon, finish.lat)
-    distance = equirectangular_dist_approx(packet1.lon, packet1.lat, finish.lon, finish.lat)
+    distance = distance(packet1.lon, packet1.lat, finish.lon, finish.lat)
 
     #print("Distance haver: " + str(distance_haver) + " Distance equire: " + str(distance_equire))
     C = (packet1.lat, packet1.lon)

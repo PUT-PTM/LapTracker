@@ -39,7 +39,7 @@ class Measure(object):
         packet = gpsd.get_current()
         if(self.last_packet is not None):
             print("Point 2 setted")
-            distance = equirectangular_dist_approx(packet.lon, packet.lat, self.last_packet.lon, self.last_packet.lat)
+            distance = distance(packet.lon, packet.lat, self.last_packet.lon, self.last_packet.lat)
             self.distance += distance
             print("Distance = {:0.1f}m".format(distance))
             print("Total distance = {:0.1f}m".format(self.distance))

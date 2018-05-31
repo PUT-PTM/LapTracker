@@ -23,8 +23,11 @@ def contains(segment, ps):
         return False
 
 def intersects(segment1, segment2):
-    R = line_intersection(segment1, segment2)
-    return contains(segment1, R) & contains(segment2,R)
+    intersection_p = line_intersection(segment1, segment2)
+    if contains(segment1, intersection_p) & contains(segment2, intersection_p):
+        return intersection_p
+    else:
+        return None
 
 #A = (0,2)
 #B = (6,2)
