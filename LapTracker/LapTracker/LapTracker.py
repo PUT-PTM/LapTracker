@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 import time
 import glob,os
 
-from Distance import distance
+from Distance import calculate_distance
 from LineIntersection import intersects
 from Display import DisplaySetter
 
@@ -49,7 +49,7 @@ class Tracker(object):
                 self.finish_center_p.lat  = (self.finish_p2[0] + self.finish_p1[0]) / 2
                 self.finish_center_p.lon  = (self.finish_p2[1] + self.finish_p1[1]) / 2
 
-                self.min_distance = 5 * distance(packet.lon, packet.lat, self.finish_center_p.lon, self.finish_center_p.lat)
+                self.min_distance = 5 * calculate_distance(packet.lon, packet.lat, self.finish_center_p.lon, self.finish_center_p.lat)
         else:
             print("No GPS fix")
 
@@ -80,9 +80,9 @@ class Tracker(object):
                         self.packet = packet
                         continue
                 
-                    self.distance += distance(packet.lon, packet.lat, self.packet.lon, self.packet.lat)
+                    self.distance += calculate_distance(packet.lon, packet.lat, self.packet.lon, self.packet.lat)
 
-                    distance_to_finish = distance(packet.lon, packet.lat, self.finish_center_p.lon, self.finish_center_p.lat)
+                    distance_to_finish = calculate_distance(packet.lon, packet.lat, self.finish_center_p.lon, self.finish_center_p.lat)
 
                     if distance_to_finish < self.min_distance:
 
