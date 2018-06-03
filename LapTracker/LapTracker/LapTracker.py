@@ -3,6 +3,7 @@ import gpsd
 import RPi.GPIO as GPIO
 import time
 import glob,os
+import datetime
 
 from Distance import distance
 from LineIntersection import intersects
@@ -28,11 +29,6 @@ class Tracker(object):
         self.finish_p2 = None
         self.finish_center_p = None
 
-        self.start_time = None
-
-        self.distance = 0
-        self.min_distance = 0
-
     def set_point(self):
         packet = gpsd.get_current()
         if packet.mode > 1:
@@ -48,8 +44,6 @@ class Tracker(object):
                 self.finish_center_p = packet
                 self.finish_center_p.lat  = (self.finish_p2[0] + self.finish_p1[0]) / 2
                 self.finish_center_p.lon  = (self.finish_p2[1] + self.finish_p1[1]) / 2
-
-                self.min_distance = 5 * distance(packet.lon, packet.lat, self.finish_center_p.lon, self.finish_center_p.lat)
         else:
             print("No GPS fix")
 
@@ -57,10 +51,8 @@ class Tracker(object):
         if GPIO.input(3) == 0 and self.start is None:
             self.start = time.time()
         elif GPIO.input(3) == 1 and self.start is not None:
-            print("high")
             end = time.time()
             elapsed = end - self.start
-            print(elapsed)
 
             self.start = None
         
@@ -70,23 +62,29 @@ class Tracker(object):
                 self.running = not self.running
 
     def run(self):
+        previous_packet = None
+        start_time = None
+        total_distance = 0
+        min_distance = 40
+
         while self.running:
                 time.sleep(.9)
                 if self.finish_p1 is None or self.finish_p2 is None or self.finish_center_p is None:
                     continue
                 packet = gpsd.get_current()
                 if packet.mode > 1:
-                    if(self.packet is None):
-                        self.packet = packet
+                    if(previous_packet is None):
+                        previous_packet = packet
                         continue
-                
-                    self.distance += distance(packet.lon, packet.lat, self.packet.lon, self.packet.lat)
+                    
+                    distance_between_packets = distance(packet.lon, packet.lat, previous_packet.lon, previous_packet.lat)
+                    total_distance += distance_between_packets
 
                     distance_to_finish = distance(packet.lon, packet.lat, self.finish_center_p.lon, self.finish_center_p.lat)
 
-                    if distance_to_finish < self.min_distance:
+                    if distance_to_finish < min_distance:
 
-                        last_p = (self.packet.lat, self.packet.lon)
+                        last_p = (previous_packet.lat, previous_packet.lon)
                         actual_p = (packet.lat, packet.lon)
 
                         interesction_p  = intersects((self.finish_p1, self.finish_p2), (last_p, actual_p))
@@ -94,10 +92,19 @@ class Tracker(object):
                         if interesction_p is not None:
                             print ("Distance to finish: {:0.1f}m Intersection detected!".format(distance_to_finish))
 
-                            actual_time = packet.get_time()
-                            if(self.start_time is not None):
-                                lap_time = actual_time - self.start_time
-                            self.start_time = actual_time
+                            distance_after_intersection = distance(packet.lon, packet.lat, interesction_p[1], interesction_p[0])
+                            print("Distance from intersection: {:0.1f}m".format(distance_after_intersection))
+
+                            time_to_subtract = distance_after_intersection/distance_between_packets
+
+                            actual_time = packet.get_time() 
+                            print(actual_time)
+                            actual_time-= datetime.timedelta(seconds=time_to_subtract)
+                            print(actual_time)
+                            if(start_time is not None):
+                                lap_time = actual_time - start_time 
+                                print(lap_time)
+                            start_time = actual_time
 
                         else:
                             print ("Distance to finish: {:0.1f}m".format(distance_to_finish))
@@ -106,13 +113,13 @@ class Tracker(object):
                     self.display.printsubmenu()
                     self.display.printsignalbar()
                     self.display.setspeed(int(packet.hspeed*3.6))
-                    self.display.setdistance(int(self.distance))
+                    self.display.setdistance("{:0.2f}".format(total_distance/1000))
                     self.display.printcurrentposition()
                     self.display.disp.image(self.display.image)
                     self.display.disp.display()
                     #self.display.nextscreen()
 
-                    self.packet = packet
+                    previous_packet = packet
 
                 else:
                     print("No GPS fix")
