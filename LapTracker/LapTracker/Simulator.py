@@ -54,7 +54,7 @@ packet1 = sim.get_current()
 
 # how long we wait between subsequent tracking, in seconds
 #this part before tracking starts
-measureDelay = 0.0
+measureDelay = 1.0
 timepointA = time.monotonic();
 
 while True:
@@ -63,7 +63,7 @@ while True:
       # in here all the per-tracking-loop logic
     if(timepointB-timepointA >= measureDelay):
         print("Minelo ", measureDelay, " sekund.\n")
-        timepointA += timepointB - timepointA
+        timepointA = timepointB
         packet2 = sim.get_current()
         #distance_haver = haversine(packet1.lon, packet1.lat, finish.lon, finish.lat)
         distance = calculate_distance(packet1.lon, packet1.lat, finish.lon, finish.lat)
