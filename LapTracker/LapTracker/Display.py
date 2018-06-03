@@ -29,11 +29,13 @@ class DisplaySetter(object):
         self.font_kmh = ImageFont.truetype('pixelmix.ttf', 8)
         self.font_parameter = ImageFont.truetype('pixelmix.ttf', 16)
 
-        self.disp.begin(contrast=50)
+        self.disp.begin(contrast=40)
         
         # Clear display
         self.disp.clear()
         self.disp.display()
+
+        self.alert = '----'	
         
         # Draw a white filled box to clear the image
         self.draw.rectangle((0, 0, LCD.LCDWIDTH, LCD.LCDHEIGHT), outline=255, fill=255)
@@ -97,6 +99,10 @@ class DisplaySetter(object):
         if self.screen == 4:
             self.screen = 0
 	
+	    self.setscreen(self.screen)
+
+    def setscreen(self, screen):
+        self.screen = screen
 	    #Lines below print currently chosen submenu
         if self.screen == 0:
             self.draw.rectangle((1, 1, 12, 11), outline=0, fill=255)
@@ -131,7 +137,7 @@ class DisplaySetter(object):
 	    self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
 	    self.draw.text((70, 35), 'km', font=self.font_kmh)
         # Print the distance
-	    self.draw.text((17, 28), str(self.distance), font=self.font_parameter)
+	    self.draw.text((17, 28), "{:0.2f}".format(self.distance/1000), font=self.font_parameter)
 
     def printlaptime(self):
         # Clear the display
@@ -155,7 +161,7 @@ class DisplaySetter(object):
         # Clear the display
         self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
         
-        self.draw.text((17, 28), str(alert), font=self.font_parameter)
+        self.draw.text((17, 28), str(self.alert), font=self.font_parameter)
 
 
 		# Printvmax
@@ -218,8 +224,8 @@ class DisplaySetter(object):
     def setlaptime(self, new):												#
         self.laptime = new													####	   ____    _   _   _       __     __
 																			#		  / __ \  | \ | | | |      \ \   / /
-    def togglesignalbar(self):												#		 | |  | | |  \| | | |       \ \_/ / 
-        self.signalbar = not self.signalbar									#		 | |  | | | . ` | | |        \   /  
+    def setsignalbar(self, new):											#		 | |  | | |  \| | | |       \ \_/ / 
+        self.signalbar = new									            #		 | |  | | | . ` | | |        \   /  
 																			#		 | |__| | | |\  | | |____     | |   
     def setcurrentposition(self, new):										#		  \____/  |_| \_| |______|    |_| 
         self.currentposition = new										   #		

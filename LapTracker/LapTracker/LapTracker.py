@@ -5,7 +5,7 @@ import time
 import glob,os
 import datetime
 
-from Distance import distance
+from Distance import calculate_distance
 from LineIntersection import intersects
 from Display import DisplaySetter
 
@@ -66,63 +66,84 @@ class Tracker(object):
         start_time = None
         total_distance = 0
         min_distance = 40
+        max_speed = 0
+        speed = 0
+        gps_signal = False
+        self.display.setscreen(3)
 
         while self.running:
                 time.sleep(.9)
-                if self.finish_p1 is None or self.finish_p2 is None or self.finish_center_p is None:
-                    continue
-                packet = gpsd.get_current()
-                if packet.mode > 1:
-                    if(previous_packet is None):
-                        previous_packet = packet
-                        continue
+
+                alert = '--'
+                if self.finish_p1 is not None and self.finish_p2 is not None:
+                    packet = gpsd.get_current()
+                    if packet.mode > 1:
+                        gps_signal = True
+
+                        if(previous_packet is None):
+                            previous_packet = packet
                     
-                    distance_between_packets = distance(packet.lon, packet.lat, previous_packet.lon, previous_packet.lat)
-                    total_distance += distance_between_packets
+                        distance_between_packets = calculate_distance(packet.lon, packet.lat, previous_packet.lon, previous_packet.lat)
+                        total_distance += distance_between_packets
 
-                    distance_to_finish = distance(packet.lon, packet.lat, self.finish_center_p.lon, self.finish_center_p.lat)
+                        distance_to_finish = calculate_distance(packet.lon, packet.lat, self.finish_center_p.lon, self.finish_center_p.lat)
 
-                    if distance_to_finish < min_distance:
+                        speed = int(packet.hspeed*3.6)
 
-                        last_p = (previous_packet.lat, previous_packet.lon)
-                        actual_p = (packet.lat, packet.lon)
+                        if max_speed < speed:
+                            max_speed = speed
 
-                        interesction_p  = intersects((self.finish_p1, self.finish_p2), (last_p, actual_p))
+                        if distance_to_finish < min_distance:
 
-                        if interesction_p is not None:
-                            print ("Distance to finish: {:0.1f}m Intersection detected!".format(distance_to_finish))
+                            last_p = (previous_packet.lat, previous_packet.lon)
+                            actual_p = (packet.lat, packet.lon)
 
-                            distance_after_intersection = distance(packet.lon, packet.lat, interesction_p[1], interesction_p[0])
-                            print("Distance from intersection: {:0.1f}m".format(distance_after_intersection))
+                            interesction_p  = intersects((self.finish_p1, self.finish_p2), (last_p, actual_p))
 
-                            time_to_subtract = distance_after_intersection/distance_between_packets
+                            if interesction_p is not None:
+                                #print ("Distance to finish: {:0.1f}m Intersection detected!".format(distance_to_finish))
 
-                            actual_time = packet.get_time() 
-                            print(actual_time)
-                            actual_time-= datetime.timedelta(seconds=time_to_subtract)
-                            print(actual_time)
-                            if(start_time is not None):
-                                lap_time = actual_time - start_time 
-                                print(lap_time)
-                            start_time = actual_time
+                                distance_after_intersection = calculate_distance(packet.lon, packet.lat, interesction_p[1], interesction_p[0])
+                                #print("Distance from intersection: {:0.1f}m".format(distance_after_intersection))
 
-                        else:
-                            print ("Distance to finish: {:0.1f}m".format(distance_to_finish))
+                                time_to_subtract = distance_after_intersection/distance_between_packets
 
-                    self.display.printspeed()
-                    self.display.printsubmenu()
-                    self.display.printsignalbar()
-                    self.display.setspeed(int(packet.hspeed*3.6))
-                    self.display.setdistance("{:0.2f}".format(total_distance/1000))
-                    self.display.printcurrentposition()
-                    self.display.disp.image(self.display.image)
-                    self.display.disp.display()
-                    #self.display.nextscreen()
+                                actual_time = packet.get_time() 
+                                actual_time-= datetime.timedelta(seconds=time_to_subtract)
 
-                    previous_packet = packet
+                                if(start_time is not None):
+                                    lap_time = actual_time - start_time 
+                                    alert = lap_time
+                                    print(lap_time)
+                                start_time = actual_time
 
+                            else:
+                                print ("Distance to finish: {:0.1f}m".format(distance_to_finish))
+
+                        previous_packet = packet
+
+                    else:
+                        gps_signal = False
+                        print("No GPS fix")
                 else:
-                    print("No GPS fix")
+                    alert = "Set Finish"
+
+                self.display.setspeed(speed)
+                self.display.setdistance(total_distance)
+                self.display.setsignalbar(gps_signal)
+                self.display.setalert(alert)
+                
+                #if(alert is '--'):
+                #    self.display.nextscreen()
+                #else:
+                #    self.display.setscreen(3)
+
+                self.display.printspeed()
+                self.display.printsubmenu()
+                self.display.printsignalbar()
+                self.display.printcurrentposition()
+                self.display.disp.image(self.display.image)
+                self.display.disp.display()
 
         path = 'sudo shutdown -h now '
         os.system (path)
