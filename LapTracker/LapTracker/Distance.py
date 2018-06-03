@@ -23,10 +23,10 @@ def haversine(lon1, lat1, lon2, lat2):
 """
 Less precision, much faster, requires testing if it's enough
 """
-def distance(lon1, lat1, lon2, lat2):
+def calculate_distance(lon1, lat1, lon2, lat2):
 	lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
 	R = 6371
 	x = (lon2 - lon1) * cos( 0.5*(lat2+lat1) )
 	y = lat2 - lat1
 	d = R * sqrt( x*x + y*y )
-	return d*1000
+	return d*1000     

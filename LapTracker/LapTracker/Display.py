@@ -7,8 +7,6 @@ from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 
-# Set fonts
-
 
 class DisplaySetter(object):
     ## Raspberry Pi hardware SPI config:
@@ -48,6 +46,7 @@ class DisplaySetter(object):
     signalbar = False # true if there is signal, false otherwise
     currentposition = -3.3 # tells you how much faster or slower are you compare to previous lap
     vmax = 150 # max recorded speed
+    alert = '----'
 
     def printmenu(self):
         # km/h
@@ -152,13 +151,18 @@ class DisplaySetter(object):
 		else:
 			self.draw.text((17, 28), str(str(self.currentposition)), font=self.font_parameter)
 
-    def printvmax(self):
+    def printvmax(self): # for test it will be used for alerts
         # Clear the display
-	    self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-	    self.draw.text((62, 35), 'km/h', font=self.font_kmh)
-        # Print sth
-	    self.draw.text((17, 28), str(self.vmax), font=self.font_parameter)
+        self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
+        
+        self.draw.text((17, 28), str(alert), font=self.font_parameter)
 
+
+		# Printvmax
+        #self.draw.text((62, 35), 'km/h', font=self.font_kmh)
+        ## Print sth
+        #self.draw.text((17, 28), str(self.vmax), font=self.font_parameter)
+        
     def printsubmenu(self):
 	    if self.screen == 0:
 		    self.printdistance()
@@ -201,10 +205,11 @@ class DisplaySetter(object):
             self.draw.line((76, 14, 79, 14), fill=0)
             self.draw.line((77, 15, 78, 15), fill=0)
 
-    # SETTERS for speed, distance, laptime, currentposition, vmax		#
-    # TOGGLE for signalbar												 #
-    # TO SWITCH TO NEXT SCREEN USE displayInUse.nextscreen()			  #
-    def setspeed(self, new):											   #		                         _     _       _      
+																		#
+    # SETTERS for speed, distance, laptime, currentposition, vmax, alert #
+    # TOGGLE for signalbar												  #
+    # TO SWITCH TO NEXT SCREEN USE displayInUse.nextscreen()			   #
+    def setspeed(self, new):											    #		                         _     _       _      
         self.speed = new													#		                        | |   | |     (_)     
 																			#		  _   _   ___    ___    | |_  | |__    _   ___ 
     def setdistance(self, new):												#		 | | | | / __|  / _ \   | __| | '_ \  | | / __|
@@ -221,7 +226,13 @@ class DisplaySetter(object):
 																		  #				type "displayInUse." before any use of function
     def setvmax(self, new):												 #
         self.vmax = new													#
-
+																	   #
+    def setalert(self, newalert):									  #
+        self.alert = newalert										 #
+																	#
+    def resetalert(self):										   #
+        self.alert = '----'										  #
+																 #
 
 #displayInUse = DisplaySetter()
 
