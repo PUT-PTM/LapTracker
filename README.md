@@ -26,6 +26,15 @@ TxD-->P10<br />
 GND-->GND<br />
 VCC-->5V<br /><br />
 
+PCD8544 (Nokia 3310) display:<br />
+GND-->GND<br />
+VCC-->3.3V<br />
+CLK-->SCLK<br />
+DIN-->MOSI<br />
+DC-->P16<br />
+CE-->CE0_N<br />
+RST-->P18<br /><br />
+
 Turn on the device by switching button. When you're on the track just pick two points on both sides of the track that will act as the start/finish line.
 
 ### How to compile:
@@ -39,6 +48,7 @@ Improvements:<br />
 ### Attributions:
 https://pypi.python.org/pypi/gpsd-py3 - gpsd module<br />
 https://pypi.python.org/pypi/RPi.GPIO - GPIO module<br />
+https://1drv.ms/t/s!Ah7Mn0var0GvheVgGBCcdYaONGrsCg - Adafruit module<br />
 
 ### License:
 Distributed under MIT license
