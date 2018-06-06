@@ -49,6 +49,8 @@ class DisplaySetter(object):
     currentposition = -3.3 # tells you how much faster or slower are you compare to previous lap
     vmax = 150 # max recorded speed
     alert = '----'
+    alertsque = list('----')
+    alertTTL = 2
 
     def printmenu(self):
         # km/h
@@ -85,12 +87,6 @@ class DisplaySetter(object):
 
         # Print the speed
         self.draw.text((17, -3), str(self.speed), font=self.font_speed)
-
-        ## Test of speed
-        #self.speed += 5
-        #if self.speed > 80:
-        #    self.speed = 1
-        ## End of the test
         return
 
     def nextscreen(self):
@@ -160,10 +156,16 @@ class DisplaySetter(object):
     def printvmax(self): # for test it will be used for alerts
         # Clear the display
         self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-        
+        length = int(len(self.alertsque))
+        if self.alertTTL <= 0 and length > 1:
+            self.alert = self.alertsque.pop()
+            self.alertTTL = 2
+        elif length == 1:
+            self.alert = alertsque[0]
+            self.alertTTL = 1
         self.draw.text((17, 28), str(self.alert), font=self.font_parameter)
-
-
+        self.alertTTL = self.alertTTL - 1
+        
 		# Printvmax
         #self.draw.text((62, 35), 'km/h', font=self.font_kmh)
         ## Print sth
@@ -188,8 +190,6 @@ class DisplaySetter(object):
         elif self.signalbar == False:
             self.draw.rectangle((62, 0, 69, 8), outline=255, fill=255)
             self.draw.text((64, 1), 'X', font=self.font_kmh)
-        # Used for tests
-        #self.signalbar = not self.signalbar
 
     def printcurrentposition(self): #prints information about current position
         if self.currentposition < 0:
@@ -233,11 +233,11 @@ class DisplaySetter(object):
     def setvmax(self, new):												 #
         self.vmax = new													#
 																	   #
-    def setalert(self, newalert):									  #
-        self.alert = newalert										 #
+    def pushalert(self, newalert):									  #
+        self.alertsque.append(newalert)								 #
 																	#
-    def resetalert(self):										   #
-        self.alert = '----'										  #
+                        										   #
+                            									  #
 																 #
 
 #displayInUse = DisplaySetter()
