@@ -321,8 +321,8 @@ class DisplaySetter(object):
             self.nextscreen()
 
 
-																		#
-    # SETTERS for speed, distance, laptime, currentposition, alert      #
+																	    #
+    # SETTERS for speed, distance, laptime, currentposition, alert       #
     # TOGGLE for signalbar												  #
     # TO SWITCH TO NEXT SCREEN USE displayInUse.nextscreen()               #
                                                                             #
@@ -347,7 +347,8 @@ class DisplaySetter(object):
         templist = [newalert]                                           #
         self.alertsque = self.alertsque + templist				       #
 																   	  #
-    def buttonwasclicked(self, new):			    				 #
-        self.levelcounter = self.levelcounter + 1                   #
-                            								       #
-																  #
+    def buttonwasclicked(self, new):                                 #
+        if self.levelcounter < 3:                                   #
+            self.levelcounter = self.levelcounter + 1              #
+                            								      #
+																 #
