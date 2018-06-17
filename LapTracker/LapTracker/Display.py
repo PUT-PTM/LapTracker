@@ -49,7 +49,7 @@ class DisplaySetter(object):
     currentposition = 0 # tells you how much faster or slower are you compare to previous lap
     vmax = 0 # max recorded speed
     alertsque = [] # queue with alerts
-    defaultalertTTL = 4 # default time for alert to print for
+    defaultalertTTL = 2 # default time for alert to print for
     alertTTL = defaultalertTTL 
 
     def printmenu(self):
@@ -112,10 +112,6 @@ class DisplaySetter(object):
             self.screen = 0
 
     def printdistance(self):
-	    ## Used for test
-        #self.distance+=0.25
-	    #if self.distance > 99:
-		   # self.distance -= 99
         
         # Clear the display
         self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
