@@ -212,7 +212,7 @@ class DisplaySetter(object):
             elif alertsquelength > 0 and self.alertTTL > 0:
                 self.draw.text((10, 20), str(self.alertsque[0]), font=self.font_kmh)
 
-            self.disp.image(self.displayInUse.image)
+            self.disp.image(self.image)
             self.disp.display()
 
         else: #prints complete menu if no alerts
@@ -222,14 +222,14 @@ class DisplaySetter(object):
             self.printsubmenu()
             self.printsignalbar()
             self.printcurrentposition()
-            self.disp.image(self.displayInUse.image)
+            self.disp.image(self.image)
             self.disp.display()
 
 
 																	    #
     # SETTERS for speed, distance, laptime, currentposition, alert       #
     # TOGGLE for signalbar												  #
-    # TO SWITCH TO NEXT SCREEN USE displayInUse.nextscreen()               #
+    # TO SWITCH TO NEXT SCREEN USE <name of object>.nextscreen()               #
                                                                             #
     def setspeed(self, new):											    #		                         _     _       _      
         self.speed = new													#		                        | |   | |     (_)     
