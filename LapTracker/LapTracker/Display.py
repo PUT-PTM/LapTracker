@@ -29,26 +29,28 @@ class DisplaySetter(object):
         self.font_kmh = ImageFont.truetype('/home/pi/pixelmix.ttf', 8)
         self.font_parameter = ImageFont.truetype('/home/pi/pixelmix.ttf', 16)
 
-        self.disp.begin(contrast=40)
+        self.disp.begin(contrast=55)
         
         # Clear display
         self.disp.clear()
         self.disp.display()
 
-        self.alert = '----'	
-        
+        self.alert = '----'
+
         # Draw a white filled box to clear the image
         self.draw.rectangle((0, 0, LCD.LCDWIDTH, LCD.LCDHEIGHT), outline=255, fill=255)
     
     # Variables in use
-    speed = 85 # 
-    distance = 10.3 
-    laptime = 430.0 
+    speed = 0 # 
+    distance = 0 
+    laptime = 0
     screen = 0  # flag that informs which screen to show (for example: distance, time, etc)
     signalbar = False # true if there is signal, false otherwise
-    currentposition = -3.3 # tells you how much faster or slower are you compare to previous lap
-    vmax = 150 # max recorded speed
-    alert = '----'
+    currentposition = 0 # tells you how much faster or slower are you compare to previous lap
+    vmax = 0 # max recorded speed
+    alertsque = [] # queue with alerts
+    defaultalertTTL = 4 # default time for alert to print for
+    alertTTL = defaultalertTTL 
 
     def printmenu(self):
         # km/h
@@ -64,7 +66,7 @@ class DisplaySetter(object):
         self.draw.line((0, 12, 13, 12), fill=0)
         self.draw.line((0, 24, 13, 24), fill=0)
         self.draw.line((0, 36, 13, 36), fill=0)
-    
+	
 	    # print letters in submenu
         self.draw.text((4, 2), 'S', font=self.font_kmh)
         self.draw.text((4, 14), 'T', font=self.font_kmh)
@@ -72,38 +74,6 @@ class DisplaySetter(object):
         self.draw.line((4, 39, 6, 44), fill=0)
         self.draw.line((8, 39, 6, 44), fill=0)
 
-        # distance submenu is chosen
-        self.draw.rectangle((1, 1, 12, 11), outline=0, fill=255)
-        self.draw.rectangle((1, 37, 12, 46), outline=255, fill=255)
-        self.draw.text((4, 2), 'S', font=self.font_kmh)
-        self.draw.line((4, 39, 6, 44), fill=0)
-        self.draw.line((8, 39, 6, 44), fill=0)
-
-    def printspeed(self):
-        # Clear the speed
-        self.draw.rectangle((17, 0, 61, 28), outline=255, fill=255)
-
-        # Print the speed
-        self.draw.text((17, -3), str(self.speed), font=self.font_speed)
-
-        ## Test of speed
-        #self.speed += 5
-        #if self.speed > 80:
-        #    self.speed = 1
-        ## End of the test
-        return
-
-    def nextscreen(self):
-        #Changes the flag of a screen after clicking the button
-        self.screen += 1
-        if self.screen == 4:
-            self.screen = 0
-        
-        self.setscreen(self.screen)
-
-    def setscreen(self, screen):
-        self.screen = screen
-	    #Lines below print currently chosen submenu
         if self.screen == 0:
             self.draw.rectangle((1, 1, 12, 11), outline=0, fill=255)
             self.draw.rectangle((1, 37, 12, 46), outline=255, fill=255)
@@ -127,6 +97,20 @@ class DisplaySetter(object):
             self.draw.line((8, 39, 6, 44), fill=0) #print V
             self.draw.text((4, 26), 'L', font=self.font_kmh)
 
+    def printspeed(self):
+        # Clear the speed
+        self.draw.rectangle((17, 0, 61, 28), outline=255, fill=255)
+
+        # Print the speed
+        self.draw.text((17, -3), str(self.speed), font=self.font_speed)
+        return
+
+    def nextscreen(self):
+        #Changes the flag of a screen after clicking the button
+        self.screen += 1
+        if self.screen == 4:
+            self.screen = 0
+	    
     def printdistance(self):
 	    ## Used for test
         #self.distance+=0.25
@@ -157,17 +141,16 @@ class DisplaySetter(object):
         else:
             self.draw.text((17, 28), str(str(self.currentposition)), font=self.font_parameter)
 
-    def printvmax(self): # for test it will be used for alerts
+    def printvmax(self): 
         # Clear the display
         self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-        
-        self.draw.text((17, 28), str(self.alert), font=self.font_parameter)
 
+        if self.speed > self.vmax:
+            self.vmax = self.speed
 
 		# Printvmax
-        #self.draw.text((62, 35), 'km/h', font=self.font_kmh)
-        ## Print sth
-        #self.draw.text((17, 28), str(self.vmax), font=self.font_parameter)
+        self.draw.text((62, 35), 'km/h', font=self.font_kmh)
+        self.draw.text((17, 28), str(self.vmax), font=self.font_parameter)
         
     def printsubmenu(self):
         if self.screen == 0:
@@ -188,8 +171,6 @@ class DisplaySetter(object):
         elif self.signalbar == False:
             self.draw.rectangle((62, 0, 69, 8), outline=255, fill=255)
             self.draw.text((64, 1), 'X', font=self.font_kmh)
-        # Used for tests
-        #self.signalbar = not self.signalbar
 
     def printcurrentposition(self): #prints information about current position
         if self.currentposition < 0:
@@ -211,10 +192,45 @@ class DisplaySetter(object):
             self.draw.line((76, 14, 79, 14), fill=0)
             self.draw.line((77, 15, 78, 15), fill=0)
 
-																		#
-    # SETTERS for speed, distance, laptime, currentposition, vmax, alert #
+    def show(self):
+        alertsquelength = int(len(self.alertsque)) # the length of queue of alerts
+        if alertsquelength>0: #if there are alerts
+            if self.alertTTL > 0 and alertsquelength > 0:
+                self.alertTTL = self.alertTTL - 1
+
+            self.draw.rectangle((0, 0, 83, 47), outline=0, fill=255)
+            self.draw.rectangle((3, 3, 80, 44), outline=0, fill=255)
+
+            if alertsquelength == 1 and self.alertTTL < 1:
+                self.draw.text((10, 20), str(self.alertsque[0]), font=self.font_kmh)
+                self.alert = self.alertsque.pop(0)
+                self.alertTTL = self.defaultalertTTL
+            elif alertsquelength > 1 and self.alertTTL < 1:
+                self.draw.text((10, 20), str(self.alertsque[0]), font=self.font_kmh)
+                self.alert = self.alertsque.pop(0)
+                self.alertTTL = self.defaultalertTTL
+            elif alertsquelength > 0 and self.alertTTL > 0:
+                self.draw.text((10, 20), str(self.alertsque[0]), font=self.font_kmh)
+
+            self.disp.image(displayInUse.image)
+            self.disp.display()
+
+        else: #prints complete menu if no alerts
+            self.draw.rectangle((0, 0, 83, 47), outline=255, fill=255)
+            self.printmenu()
+            self.printspeed()
+            self.printsubmenu()
+            self.printsignalbar()
+            self.printcurrentposition()
+            self.disp.image(displayInUse.image)
+            self.disp.display()
+
+
+																	    #
+    # SETTERS for speed, distance, laptime, currentposition, alert       #
     # TOGGLE for signalbar												  #
-    # TO SWITCH TO NEXT SCREEN USE displayInUse.nextscreen()			   #
+    # TO SWITCH TO NEXT SCREEN USE displayInUse.nextscreen()               #
+                                                                            #
     def setspeed(self, new):											    #		                         _     _       _      
         self.speed = new													#		                        | |   | |     (_)     
 																			#		  _   _   ___    ___    | |_  | |__    _   ___ 
@@ -226,33 +242,12 @@ class DisplaySetter(object):
 																			#		  / __ \  | \ | | | |      \ \   / /
     def setsignalbar(self, new):											#		 | |  | | |  \| | | |       \ \_/ / 
         self.signalbar = new									            #		 | |  | | | . ` | | |        \   /  
-																			#		 | |__| | | |\  | | |____     | |   
-    def setcurrentposition(self, new):										#		  \____/  |_| \_| |______|    |_| 
-        self.currentposition = new										   #		
-																		  #				type "displayInUse." before any use of function
-    def setvmax(self, new):												 #
-        self.vmax = new													#
-																	   #
-    def setalert(self, newalert):									  #
-        self.alert = newalert										 #
-																	#
-    def resetalert(self):										   #
-        self.alert = '----'										  #
-																 #
-
-#displayInUse = DisplaySetter()
-
-#print('It works (Press Ctrl+C to stop)')
-#displayInUse.printmenu()
-
-
-
-#while True:
-#	displayInUse.printspeed()
-#	displayInUse.printsubmenu()
-#	displayInUse.printsignalbar()
-#	displayInUse.printcurrentposition()
-#	displayInUse.disp.image(displayInUse.image)
-#	displayInUse.disp.display()
-#	displayInUse.nextscreen()
-#	time.sleep(1)
+                                           									#		 | |__| | | |\  | | |____     | |   
+                                             						    	#		  \____/  |_| \_| |______|    |_|								                    	
+    def setcurrentposition(self, new):                                      #      
+        self.currentposition = new                                         #     
+                                                                          #
+    def pushalert(self, newalert):	                                     #
+        templist = [newalert]                                           #
+        self.alertsque = self.alertsque + templist				       #
+																   	  #
