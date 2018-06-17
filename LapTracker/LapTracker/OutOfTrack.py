@@ -1,17 +1,18 @@
-import csv
-
 class OutOfTrack(object):
 
-    def __init__(self, filepath):
-        self.file = open(filepath,'rt')
-        self.rows = csv.reader(self.file)
-        self.coords = []
-        for item in self.rows:
-            self.coords.append((float(item[0]), float(item[1])))
-        self.file.close()
+    def __init__(self):
         self.pos = 0
+        self.coords = []
+        self.actual_lap = []
 
-    def contains(self, point, approx):
+    def add_p(self, point):
+        self.actual_lap.append(point)
+
+    def new_lap(self):
+        self.coords = self.actual_lap
+        self.actual_lap.clear()
+
+    def check(self, point, approx):
         curpos = self.pos
         for routep in self.coords[self.pos:]:
             ++curpos

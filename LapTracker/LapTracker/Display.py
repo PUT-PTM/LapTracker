@@ -25,9 +25,9 @@ class DisplaySetter(object):
     def __init__(self):
         # Initialize library.
 
-        self.font_speed = ImageFont.truetype('pixelmix.ttf', 28)
-        self.font_kmh = ImageFont.truetype('pixelmix.ttf', 8)
-        self.font_parameter = ImageFont.truetype('pixelmix.ttf', 16)
+        self.font_speed = ImageFont.truetype('/home/pi/pixelmix.ttf', 28)
+        self.font_kmh = ImageFont.truetype('/home/pi/pixelmix.ttf', 8)
+        self.font_parameter = ImageFont.truetype('/home/pi/pixelmix.ttf', 16)
 
         self.disp.begin(contrast=40)
         
@@ -64,7 +64,7 @@ class DisplaySetter(object):
         self.draw.line((0, 12, 13, 12), fill=0)
         self.draw.line((0, 24, 13, 24), fill=0)
         self.draw.line((0, 36, 13, 36), fill=0)
-	
+    
 	    # print letters in submenu
         self.draw.text((4, 2), 'S', font=self.font_kmh)
         self.draw.text((4, 14), 'T', font=self.font_kmh)
@@ -98,8 +98,8 @@ class DisplaySetter(object):
         self.screen += 1
         if self.screen == 4:
             self.screen = 0
-	
-	    self.setscreen(self.screen)
+        
+        self.setscreen(self.screen)
 
     def setscreen(self, screen):
         self.screen = screen
@@ -132,30 +132,30 @@ class DisplaySetter(object):
         #self.distance+=0.25
 	    #if self.distance > 99:
 		   # self.distance -= 99
-		
+        
         # Clear the display
-	    self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-	    self.draw.text((70, 35), 'km', font=self.font_kmh)
+        self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
+        self.draw.text((70, 35), 'km', font=self.font_kmh)
         # Print the distance
-	    self.draw.text((17, 28), "{:0.2f}".format(self.distance/1000), font=self.font_parameter)
+        self.draw.text((17, 28), "{:0.2f}".format(self.distance/1000), font=self.font_parameter)
 
     def printlaptime(self):
         # Clear the display
-	    self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-	    self.draw.text((75, 35), 's', font=self.font_kmh)
+        self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
+        self.draw.text((75, 35), 's', font=self.font_kmh)
         # Print lap time
-	    self.draw.text((17, 28), str(self.laptime), font=self.font_parameter)
-	
+        self.draw.text((17, 28), str(self.laptime), font=self.font_parameter)
+
     def printposition(self):
         # Clear the display
-		self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-		self.draw.text((70, 35), '', font=self.font_kmh)
+        self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
+        self.draw.text((70, 35), '', font=self.font_kmh)
 		# Print currentposition
-		self.draw.text((75, 35), 's', font=self.font_kmh)
-		if(self.currentposition > 0):
-			self.draw.text((17, 28), str('+' + str(self.currentposition)), font=self.font_parameter)
-		else:
-			self.draw.text((17, 28), str(str(self.currentposition)), font=self.font_parameter)
+        self.draw.text((75, 35), 's', font=self.font_kmh)
+        if(self.currentposition > 0):
+            self.draw.text((17, 28), str('+' + str(self.currentposition)), font=self.font_parameter)
+        else:
+            self.draw.text((17, 28), str(str(self.currentposition)), font=self.font_parameter)
 
     def printvmax(self): # for test it will be used for alerts
         # Clear the display
@@ -170,14 +170,14 @@ class DisplaySetter(object):
         #self.draw.text((17, 28), str(self.vmax), font=self.font_parameter)
         
     def printsubmenu(self):
-	    if self.screen == 0:
-		    self.printdistance()
-	    elif self.screen == 1:
-		    self.printlaptime()
-	    elif self.screen == 2:
-		    self.printposition()
-	    else:
-		    self.printvmax()
+        if self.screen == 0:
+            self.printdistance()
+        elif self.screen == 1:
+            self.printlaptime()
+        elif self.screen == 2:
+            self.printposition()
+        else:
+            self.printvmax()
 
     def printsignalbar(self): #prints gps signal
         if self.signalbar == True:

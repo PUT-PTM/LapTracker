@@ -37,7 +37,7 @@ class Simulator(object):
 #packet1 = sim.get_current()
 #while True:
 #    packet2 = sim.get_current()
-#    R = router.contains((packet2.lat,packet2.lon),0.00007)
+#    R = router.check((packet2.lat,packet2.lon),0.00007)
 #    packet1 = packet2
 #    if R:
 #        print ("Found")

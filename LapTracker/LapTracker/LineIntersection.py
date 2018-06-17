@@ -7,7 +7,7 @@ def line_intersection(line1, line2):
 
     div = det(xdiff, ydiff)
     if div == 0:
-       return 'No intersection'
+       return None
 
     d = (det(*line1), det(*line2))
     x = det(d, xdiff) / div
@@ -24,7 +24,8 @@ def contains(segment, ps):
 
 def intersects(segment1, segment2):
     intersection_p = line_intersection(segment1, segment2)
-    if contains(segment1, intersection_p) & contains(segment2, intersection_p):
+    if intersection_p is not None and contains(segment1, intersection_p) and contains(segment2, intersection_p):
+        print("Intersection!!!")
         return intersection_p
     else:
         return None

@@ -4,14 +4,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>2c6d53d7-bc11-45d9-abe0-c570e66a4281</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Display.py</StartupFile>
+    <StartupFile>Simulator.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>LapTracker</Name>
     <RootNamespace>LapTracker</RootNamespace>
-    <PublishUrl>\\192.168.137.157\LapTracker\</PublishUrl>
+    <PublishUrl>\\192.168.137.47\LapTracker\</PublishUrl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
