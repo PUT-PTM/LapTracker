@@ -66,7 +66,7 @@ class DisplaySetter(object):
         self.draw.line((0, 12, 13, 12), fill=0)
         self.draw.line((0, 24, 13, 24), fill=0)
         self.draw.line((0, 36, 13, 36), fill=0)
-	
+
 	    # print letters in submenu
         self.draw.text((4, 2), 'S', font=self.font_kmh)
         self.draw.text((4, 14), 'T', font=self.font_kmh)
@@ -110,7 +110,7 @@ class DisplaySetter(object):
         self.screen += 1
         if self.screen == 4:
             self.screen = 0
-	    
+
     def printdistance(self):
 	    ## Used for test
         #self.distance+=0.25
@@ -212,7 +212,7 @@ class DisplaySetter(object):
             elif alertsquelength > 0 and self.alertTTL > 0:
                 self.draw.text((10, 20), str(self.alertsque[0]), font=self.font_kmh)
 
-            self.disp.image(displayInUse.image)
+            self.disp.image(self.displayInUse.image)
             self.disp.display()
 
         else: #prints complete menu if no alerts
@@ -222,7 +222,7 @@ class DisplaySetter(object):
             self.printsubmenu()
             self.printsignalbar()
             self.printcurrentposition()
-            self.disp.image(displayInUse.image)
+            self.disp.image(self.displayInUse.image)
             self.disp.display()
 
 

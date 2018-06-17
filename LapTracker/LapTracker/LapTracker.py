@@ -76,8 +76,6 @@ class Tracker(object):
         gps_signal = False
         lap_number = 0
 
-        self.display.setscreen(3)
-
         router = OutOfTrack()
 
         measureDelay = 1.0
@@ -140,7 +138,7 @@ class Tracker(object):
 
                                 if(lap_number >= 2):
                                     lap_time = actual_time - start_time 
-                                    alert = lap_time
+                                    self.display.pushalert(lap_time)
                                     print(lap_time)
 
                                 start_time = actual_time
@@ -162,14 +160,8 @@ class Tracker(object):
                 self.display.setspeed(speed)
                 self.display.setdistance(total_distance)
                 self.display.setsignalbar(gps_signal)
-                self.display.setalert(alert)
                 
-                self.display.printspeed()
-                self.display.printsubmenu()
-                self.display.printsignalbar()
-                self.display.printcurrentposition()
-                self.display.disp.image(self.display.image)
-                self.display.disp.display()
+                self.display.show()
 
                 sleepTime = (measureDelay -0.1 -(time.monotonic()-timepointB)*2)
                 if( sleepTime > 0):
