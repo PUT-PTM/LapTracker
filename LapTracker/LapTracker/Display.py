@@ -29,7 +29,7 @@ class DisplaySetter(object):
         self.font_kmh = ImageFont.truetype('/home/pi/pixelmix.ttf', 8)
         self.font_parameter = ImageFont.truetype('/home/pi/pixelmix.ttf', 16)
 
-        self.disp.begin(contrast=55)
+        self.disp.begin(contrast=38)
         
         # Clear display
         self.disp.clear()

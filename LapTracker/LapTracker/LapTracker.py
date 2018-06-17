@@ -18,7 +18,9 @@ class Tracker(object):
         self.start = None
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(3,  GPIO.IN) #physical pull up resistor is fitted on this channel
+        GPIO.setup(16,  GPIO.IN) 
         GPIO.add_event_detect(3, GPIO.BOTH, callback=self.button_callback)
+        GPIO.add_event_detect(16, GPIO.BOTH, callback=self.button_callback)
         
         self.display = DisplaySetter()
         self.display.printmenu() 
@@ -35,35 +37,37 @@ class Tracker(object):
         if packet.mode > 1:
             if(self.finish_p1 is None):
                 self.finish_p1 = (packet.lat, packet.lon)
-                print("Finish point 1 setted")
             else:
-                print("Finish point 2 setted")
                 self.finish_p2 = self.finish_p1
-                print("Finish point 1 setted")
                 self.finish_p1 = (packet.lat, packet.lon)
 
-                self.finish_center_p = packet
-                #self.finish_center_p.lat  = (self.finish_p2[0] + self.finish_p1[0]) / 2
-                #self.finish_center_p.lon  = (self.finish_p2[1] + self.finish_p1[1]) / 2
+                self.finish_center_p  = ((self.finish_p2[0] + self.finish_p1[0]) / 2, (self.finish_p2[1] + self.finish_p1[1]) / 2)
 
-                self.finish_center_p.lat  = self.finish_p1[0]
-                self.finish_center_p.lon  = self.finish_p1[1]
+                #self.finish_center_p.lat  = self.finish_p1[0]
+                #self.finish_center_p.lon  = self.finish_p1[1]
+            self.display.pushalert("Point setted")
         else:
-            print("No GPS fix")
+            self.display.pushalert("No GPS")
 
     def button_callback(self, channel):
-        if GPIO.input(3) == 0 and self.start is None:
+        print(channel)
+        if GPIO.input(channel) == 0 and self.start is None:
             self.start = time.time()
-        elif GPIO.input(3) == 1 and self.start is not None:
+        elif GPIO.input(channel) == 1 and self.start is not None:
             end = time.time()
             elapsed = end - self.start
 
             self.start = None
         
-            if(elapsed<1):
-                self.set_point()
-            else:
-                self.running = not self.running
+            if channel == 3:
+                if(elapsed<1):
+                    self.set_point()
+                else:
+                    self.running = not self.running
+            elif channel == 16:
+                self.display.nextscreen()
+
+            
 
     def run(self):
         previous_packet = None
@@ -71,7 +75,6 @@ class Tracker(object):
         total_distance = 0
         min_distance = 40
         max_speed = 0
-        avg_speed = 0
         speed = 0
         gps_signal = False
         lap_number = 0
@@ -109,7 +112,7 @@ class Tracker(object):
                         #    if not on_track:
                         #        alert = 'out of track'
 
-                        distance_to_finish = calculate_distance(packet.lon, packet.lat, self.finish_center_p.lon, self.finish_center_p.lat)
+                        distance_to_finish = calculate_distance(packet.lon, packet.lat, self.finish_center_p[0], self.finish_center_p[1])
 
                         speed = int(packet.hspeed*3.6)
 
@@ -125,7 +128,7 @@ class Tracker(object):
 
                             if interesction_p is not None:
                                 lap_number+=1
-                                router.new_lap()
+                                #router.new_lap()
 
                                 distance_after_intersection = calculate_distance(packet.lon, packet.lat, interesction_p[1], interesction_p[0])
                                 #print ("Distance to finish: {:0.1f}m Intersection detected!".format(distance_to_finish))
@@ -147,14 +150,9 @@ class Tracker(object):
                                 print ("Distance to finish: {:0.1f}m".format(distance_to_finish))
 
                         previous_packet = packet
-                    else:
-                        alert = "set finish"
-                    prec = packet.position_precision()
-                    print(prec[0],prec[1])
                 else:
                     gps_signal = False
-                    alert = "No GPS"
-                    print("No GPS fix")
+                    #print("No GPS fix")
                 
 
                 self.display.setspeed(speed)
