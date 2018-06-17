@@ -1,11 +1,14 @@
 # LapTracker
 
 ### Overview:
-LapTracker is a project which enables to track lap times on dirtbike, bike, car or whatever you want. 
+LapTracker is a device that allows you to measure the time in which you have beaten the track, and the subsequent laps.
+The main goal was to make it usable on a dirtbike or during extreme sports where cheaper alternative to expensive trackers is desired.
 
 ### Description:
-There's lot of gps trackers for sports activities - smartwatches with gps, or smartphone applications like Endomondo or Strava, but they are facing the same problem. They can't track laps on fixed distance track, and usually are too expensive to use in extreme conditions.
-LapTracker is created to resolve this problem. You can set your virtual start/finish line and everytime you cross this line, it will save lap time.
+There's a lot of trackers designed for sport activities and devices like smartwatches, smartphones (applications like Edomondo or Strava) that employ a gps module, but they all face the same issue - they can't tell when a route is repeating itself, when someone is beginning another lap on the same fixed track. There's also a matter of price - our goal is to create a cheap device that is good enough for amateur use, that isn't too expensive to worry about using it in extreme conditions and that will allow you to fully enjoy your favorite sport.
+The only thing you will have to do is set your virtual finishing-line on the route, record a trial run (or choose from available ones, a planned feature for now) and then you are free to enjoy your sport while being able to get some useful data about your achievements without outsider's help or expensive devices.
+Among the data our tracker provides there is: time in which you finished your lap, distance covered, maximal speed, actual speed.
+
 
 Projects components:<br />
 -Raspberry Pi Zero W <br />
@@ -39,7 +42,7 @@ Turn on the device by switching button. When you're on the track just pick two p
 
 ### How to compile:
  	
-### Future improvements:
+### Possible future features:
 Improvements:<br />
     -starts trainer<br />
     -best lap time rank<br />
@@ -61,4 +64,4 @@ Distributed under MIT license
 
 
 The project was conducted during the Microprocessor Lab course held by the Institute of Control and Information Engineering, Poznan University of Technology.<br />
-Supervisor: Tomasz Mañkowski
+Supervisor: Tomasz Mańkowski
