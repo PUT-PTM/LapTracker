@@ -46,10 +46,10 @@ class DisplaySetter(object):
     laptime = 0
     screen = 0  # flag that informs which screen to show (for example: distance, time, etc)
     signalbar = False # true if there is signal, false otherwise
-    currentposition = 0 # tells you how much faster or slower are you compare to previous lap
+    lapnumber = 0 # tells you how much faster or slower are you compare to previous lap
     vmax = 0 # max recorded speed
     alertsque = [] # queue with alerts
-    defaultalertTTL = 2 # default time for alert to print for
+    defaultalertTTL = 1 # default time for alert to print for
     alertTTL = defaultalertTTL 
 
     def printmenu(self):
@@ -117,7 +117,7 @@ class DisplaySetter(object):
         self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
         self.draw.text((70, 35), 'km', font=self.font_kmh)
         # Print the distance
-        self.draw.text((17, 28), "{:0.2f}".format(self.distance), font=self.font_parameter)
+        self.draw.text((17, 28), "{:0.2f}".format(self.distance/1000), font=self.font_parameter)
 
     def printlaptime(self):
         # Clear the display
@@ -129,11 +129,11 @@ class DisplaySetter(object):
         # Clear the display
         self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
         self.draw.text((70, 35), '', font=self.font_kmh)
-		# Print currentposition
-        if(self.currentposition > 0):
-            self.draw.text((17, 28), str(str(self.currentposition)), font=self.font_parameter)
+		# Print lapnumber
+        if(self.lapnumber > 0):
+            self.draw.text((17, 28), str(self.lapnumber), font=self.font_parameter)
         else:
-            self.draw.text((17, 28), str(str(self.currentposition)), font=self.font_parameter)
+            self.draw.text((17, 28), str(self.lapnumber), font=self.font_parameter)
 
     def printvmax(self): 
         # Clear the display
@@ -164,7 +164,7 @@ class DisplaySetter(object):
             self.draw.text((64, 1), 'X', font=self.font_kmh)
 
     def printcurrentposition(self): #prints information about current position
-        if self.currentposition < 0:
+        if self.lapnumber < 0:
             self.draw.rectangle((72, 0, 83, 15), outline=255, fill=255)
             #draw SPEEDUP symbol
             self.draw.rectangle((76, 4, 79, 15), outline=0, fill=0)
@@ -173,7 +173,7 @@ class DisplaySetter(object):
             self.draw.line((75, 2, 80, 2), fill=0)
             self.draw.line((76, 1, 79, 1), fill=0)
             self.draw.line((77, 0, 78, 0), fill=0)
-        elif self.currentposition >= 0:
+        elif self.lapnumber >= 0:
             self.draw.rectangle((72, 0, 83, 15), outline=255, fill=255)    
             #draw SLOWDWON symbol
             self.draw.rectangle((76, 0, 79, 10), outline=0, fill=0)
@@ -215,30 +215,31 @@ class DisplaySetter(object):
             self.printcurrentposition()
             self.disp.image(self.image)
             self.disp.display()
+            
 
+    # SETTERS for speed, distance, laptime, lapnumber, alert, vmax       
+    # TOGGLE for signalbar												  
+    # TO SWITCH TO NEXT SCREEN USE <name of object>.nextscreen()               
+                                                                        
+    def setspeed(self, new):											
+        self.speed = new	
+        
+    def setsignalbar(self, new):											
+        self.signalbar = new
 
-																	    #
-    # SETTERS for speed, distance, laptime, currentposition, alert       #
-    # TOGGLE for signalbar												  #
-    # TO SWITCH TO NEXT SCREEN USE <name of object>.nextscreen()               #
-                                                                            #
-    def setspeed(self, new):											    #		                         _     _       _      
-        self.speed = new													#		                        | |   | |     (_)     
-																			#		  _   _   ___    ___    | |_  | |__    _   ___ 
-    def setdistance(self, new):												#		 | | | | / __|  / _ \   | __| | '_ \  | | / __|
-        self.distance = new													#		 | |_| | \__ \ |  __/   | |_  | | | | | | \__ \
-																			#		  \__,_| |___/  \___|    \__| |_| |_| |_| |___/
-    def setlaptime(self, new):												#
-        self.laptime = new													####	   ____    _   _   _       __     __
-																			#		  / __ \  | \ | | | |      \ \   / /
-    def setsignalbar(self, new):											#		 | |  | | |  \| | | |       \ \_/ / 
-        self.signalbar = new									            #		 | |  | | | . ` | | |        \   /  
-                                           									#		 | |__| | | |\  | | |____     | |   
-                                             						    	#		  \____/  |_| \_| |______|    |_|								                    	
-    def setcurrentposition(self, new):                                      #      
-        self.currentposition = new                                         #     
-                                                                          #
-    def pushalert(self, newalert):	                                     #
-        templist = [newalert]                                           #
-        self.alertsque = self.alertsque + templist				       #
-																   	  #
+    def setdistance(self, new):										
+        self.distance = new													
+
+    def setbestlaptime(self, new):											
+        self.laptime = new													
+                                                                            
+    def setvmax(self, new):
+        self.vmax = new                                                         
+                                             						    	 							                    	
+    def setlapnumber(self, new):                                            
+        self.lapnumber = new                                              
+                                                                    
+    def pushalert(self, newalert):	                                
+        templist = [newalert]                                       
+        self.alertsque = self.alertsque + templist				    
+
