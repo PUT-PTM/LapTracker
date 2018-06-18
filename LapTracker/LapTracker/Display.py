@@ -117,32 +117,27 @@ class DisplaySetter(object):
         self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
         self.draw.text((70, 35), 'km', font=self.font_kmh)
         # Print the distance
-        self.draw.text((17, 28), "{:0.2f}".format(self.distance/1000), font=self.font_parameter)
+        self.draw.text((17, 28), "{:0.2f}".format(self.distance), font=self.font_parameter)
 
     def printlaptime(self):
         # Clear the display
         self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-        self.draw.text((75, 35), 's', font=self.font_kmh)
         # Print lap time
         self.draw.text((17, 28), str(self.laptime), font=self.font_parameter)
 
-    def printposition(self):
+    def printlap(self):
         # Clear the display
         self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
         self.draw.text((70, 35), '', font=self.font_kmh)
 		# Print currentposition
-        self.draw.text((75, 35), 's', font=self.font_kmh)
         if(self.currentposition > 0):
-            self.draw.text((17, 28), str('+' + str(self.currentposition)), font=self.font_parameter)
+            self.draw.text((17, 28), str(str(self.currentposition)), font=self.font_parameter)
         else:
             self.draw.text((17, 28), str(str(self.currentposition)), font=self.font_parameter)
 
     def printvmax(self): 
         # Clear the display
         self.draw.rectangle((14, 26, 83, 47), outline=255, fill=255)
-
-        if self.speed > self.vmax:
-            self.vmax = self.speed
 
 		# Printvmax
         self.draw.text((62, 35), 'km/h', font=self.font_kmh)
@@ -154,7 +149,7 @@ class DisplaySetter(object):
         elif self.screen == 1:
             self.printlaptime()
         elif self.screen == 2:
-            self.printposition()
+            self.printlap()
         else:
             self.printvmax()
 
