@@ -24,11 +24,16 @@ Putty - SSH connection <br />
 
 ### How to run:
 #### Connections:<br />
-NEO-7M-C GPS/GLONASS module:<br />
-RxD-->P08<br />
-TxD-->P10<br />
-GND-->GND<br />
-VCC-->5V<br /><br />
+(According to Raspberry PI Pinout) <br />
+3v3 Power - GPS Power Supply<br />
+BCM 3 - Power On/Off for Raspberry; Left button for setting up points<br />
+PIN 6 (Ground*) - Ground for GPS<br />
+PIN 9 (Ground*) - Ground for Left button<br />
+BCM 14 - RX GPS<br />
+BCM 15 - TX GPS<br />
+BCM 26 - Right button<br />
+PIN 39 (Ground*) - Ground for Right button<br />
+*Any ground can be used, this is just the suggested layout<br /><br />
 
 PCD8544 (Nokia 5110) display:<br />
 GND-->GND<br />
