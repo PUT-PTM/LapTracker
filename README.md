@@ -10,12 +10,13 @@ The only thing you will have to do is set your virtual finishing-line on the rou
 Among the data our tracker provides there is: time in which you finished your lap, distance covered, maximal speed, actual speed.
 
 
-Projects components:<br />
+Project's components:<br />
 -Raspberry Pi Zero W <br />
 -NEO-7M-C GPS/GLONASS module <br />
--PCD8544 (Nokia 3310) display <br />
--Powerbank 4000MAh <br />
--2x switch buttons <br />
+-PCD8544 (Nokia 5110) display <br />
+-Powerbank 2000MAh <br />
+-2x Push Buttons <br />
+- Metal case  <br />
 
 ### Tools: 
 Visual Studio Community - Python with ptvsd module for remote debugging <br />
@@ -29,7 +30,7 @@ TxD-->P10<br />
 GND-->GND<br />
 VCC-->5V<br /><br />
 
-PCD8544 (Nokia 3310) display:<br />
+PCD8544 (Nokia 5110) display:<br />
 GND-->GND<br />
 VCC-->3.3V<br />
 CLK-->SCLK<br />
@@ -38,15 +39,15 @@ DC-->P16<br />
 CE-->CE0_N<br />
 RST-->P18<br /><br />
 
-Turn on the device by switching button. When you're on the track just pick two points on both sides of the track that will act as the start/finish line.
+Turn the device on by pushing the button. Afterwards wait for the GPS module to catch the signal. A GPS icon will appear on the screen when it did.
+When you are on the track, create the virtual finish-line by pressing the left button once for each of the two adjacent sides of the track. Now you should make one test lap to let the device learn the whole route (predefined routes are planned future feature) and afterwards you can enjoy the tracker to your heart's content. Right button toggles the various menus.
 
 ### How to compile:
  	
 ### Possible future features:
-Improvements:<br />
-    -starts trainer<br />
-    -best lap time rank<br />
-    -mobile application analysis<br />
+    - the possibility of saving and uploading recorded tracks<br />
+    - downloadable tracks with best time rankings<br />
+    - mobile application<br />
 
 ### Attributions:
 https://pypi.python.org/pypi/gpsd-py3 - gpsd module<br />
